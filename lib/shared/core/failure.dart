@@ -1,8 +1,8 @@
-abstract class Failure {
-  final String message;
+class Failure {
+  final String? message;
   final String? code;
 
-  Failure({required this.message, this.code});
+  Failure({this.message, this.code});
 }
 
 class GenericFailure extends Failure {
