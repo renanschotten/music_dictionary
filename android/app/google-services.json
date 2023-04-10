@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "205061030092",
+    "firebase_url": "https://musicdictionary-34dd2-default-rtdb.firebaseio.com",
+    "project_id": "musicdictionary-34dd2",
+    "storage_bucket": "musicdictionary-34dd2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205061030092:android:57df7f1a10859037e58269",
+        "android_client_info": {
+          "package_name": "com.renanschotten.music_dictionary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205061030092-qlikoin0rr8qk6ptj7akprbiov5kqdfg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFFxjMFEdo0Dembdgwj83nZ_n_BdPHOz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205061030092-qlikoin0rr8qk6ptj7akprbiov5kqdfg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
