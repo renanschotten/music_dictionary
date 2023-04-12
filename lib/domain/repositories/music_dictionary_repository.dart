@@ -5,5 +5,7 @@ import 'package:music_dictionary/shared/core/failure.dart';
 abstract class MusicDictionaryRepository {
   Future<Either<Failure, List<AppContent>>> fetchHomePage();
 
+  Future<List<AppContent>?> fetchCachedHomePage();
+
   Future<bool> saveHomePageData(List<AppContent> homePageData);
 }
