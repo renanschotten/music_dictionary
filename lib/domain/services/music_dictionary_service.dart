@@ -9,6 +9,8 @@ class MusicDictionaryService {
   final MusicDictionaryRepository repository;
 
   Future<Either<Failure, List<AppContent>>> fetchHomePage() async {
+    final response = await repository.fetchCachedHomePage();
+    if (response != null) return Right(response);
     return await repository.fetchHomePage();
   }
 
