@@ -22,23 +22,52 @@ void main() {
   });
 
   group('FetchHomePage', () {
-    test('Failure', () async {
-      when(() => repository.fetchHomePage()).thenAnswer(
-        (_) => Future.value(Left(failure)),
-      );
-      final response = await service.fetchHomePage();
-      expect(response.fold((l) => l, (r) => r), failure);
-      verify(() => repository.fetchHomePage()).called(1);
-    });
+    test(
+      'FetchCachedHomePage return homePageData and FetchHomePage is not called',
+      () async {
+        when(() => repository.fetchCachedHomePage()).thenAnswer(
+          (_) => Future.value(homePageData),
+        );
+        when(() => repository.fetchHomePage()).thenAnswer(
+          (_) => Future.value(Left(failure)),
+        );
+        final response = await service.fetchHomePage();
+        expect(response.fold((l) => l, (r) => r), homePageData);
+        verify(() => repository.fetchCachedHomePage()).called(1);
+        verifyNever(() => repository.fetchHomePage());
+      },
+    );
+    test(
+      'FetchCachedHomePage return null and FetchHomePage return Failure',
+      () async {
+        when(() => repository.fetchCachedHomePage()).thenAnswer(
+          (_) => Future.value(null),
+        );
+        when(() => repository.fetchHomePage()).thenAnswer(
+          (_) => Future.value(Left(failure)),
+        );
+        final response = await service.fetchHomePage();
+        expect(response.fold((l) => l, (r) => r), failure);
+        verify(() => repository.fetchCachedHomePage()).called(1);
+        verify(() => repository.fetchHomePage()).called(1);
+      },
+    );
 
-    test('Success', () async {
-      when(() => repository.fetchHomePage()).thenAnswer(
-        (_) => Future.value(Right(homePageData)),
-      );
-      final response = await service.fetchHomePage();
-      expect(response.fold((l) => l, (r) => r), homePageData);
-      verify(() => repository.fetchHomePage()).called(1);
-    });
+    test(
+      'FetchCachedHomePage return null and FetchHomePage return Success',
+      () async {
+        when(() => repository.fetchCachedHomePage()).thenAnswer(
+          (_) => Future.value(null),
+        );
+        when(() => repository.fetchHomePage()).thenAnswer(
+          (_) => Future.value(Right(homePageData)),
+        );
+        final response = await service.fetchHomePage();
+        expect(response.fold((l) => l, (r) => r), homePageData);
+        verify(() => repository.fetchCachedHomePage()).called(1);
+        verify(() => repository.fetchHomePage()).called(1);
+      },
+    );
   });
 
   group('SaveHomePage', () {
