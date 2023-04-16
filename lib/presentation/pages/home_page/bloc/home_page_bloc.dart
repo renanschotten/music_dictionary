@@ -14,16 +14,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final response = await service.fetchHomePage();
       emit(await response.fold(
         (l) => HomePageFailure(message: l.message!),
-        (r) {
-          //add(SaveHomePageDataEvent(homePageData: r));
-          service.saveHomePageData(r);
+        (r) async {
+          await service.saveHomePageData(r);
           return HomePageSuccess(response: r);
         },
       ));
-    });
-
-    on<SaveHomePageDataEvent>((event, emit) async {
-      await service.saveHomePageData(event.homePageData);
     });
   }
 }
