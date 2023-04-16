@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_dictionary/presentation/pages/home_page/bloc/home_page_bloc.dart';
+import 'package:music_dictionary/presentation/widgets/error/error_page_widget.dart';
+import 'package:music_dictionary/presentation/widgets/loading/loading_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,12 +30,14 @@ class _HomePageState extends State<HomePage> {
         body: BlocBuilder<HomePageBloc, HomePageState>(
           bloc: BlocProvider.of<HomePageBloc>(context),
           builder: (context, state) {
-            if (state is HomePageInitial) {
-              return Center(child: Text('Initial'));
-            } else if (state is HomePageLoading) {
-              return Center(child: CircularProgressIndicator());
+            if (state is HomePageLoading) {
+              return LoadingWidget();
             } else if (state is HomePageFailure) {
-              return Center(child: Text(state.message));
+              return ErrorPageWidget(
+                onTapButton: () => bloc.add(
+                  FetchHomePageEvent(),
+                ),
+              );
             } else if (state is HomePageSuccess) {
               return ListView.builder(
                 shrinkWrap: true,
