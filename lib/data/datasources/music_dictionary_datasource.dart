@@ -21,10 +21,6 @@ class MockMusicDictionaryDatasource implements MusicDictionaryDatasource {
 }
 
 class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
-  /* FirestoreMusicDictionaryDatasource({
-    required this.firestore,
-  }); */
-
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
