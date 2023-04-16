@@ -45,6 +45,17 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) => ListTile(
                   leading: Text(state.response[index].name),
                   trailing: Icon(Icons.arrow_right),
+                  onTap: () {
+                    try {
+                      Navigator.pushNamed(
+                        context,
+                        state.response[index].path,
+                      );
+                    } catch (_) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Rota nao encontrada')));
+                    }
+                  },
                 ),
               );
             } else {
