@@ -7,14 +7,18 @@ class MusicDictionaryService {
   MusicDictionaryService({required this.repository});
 
   final MusicDictionaryRepository repository;
-
+  bool returnedCached = false;
   Future<Either<Failure, List<AppContent>>> fetchHomePage() async {
     final response = await repository.fetchCachedHomePage();
-    if (response != null) return Right(response);
+    if (response != null) {
+      returnedCached = true;
+      return Right(response);
+    }
     return await repository.fetchHomePage();
   }
 
   Future<bool> saveHomePageData(List<AppContent> homePageData) async {
+    if (returnedCached) return true;
     return await repository.saveHomePageData(homePageData);
   }
 }
