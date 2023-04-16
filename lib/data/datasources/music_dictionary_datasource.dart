@@ -24,13 +24,13 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
   @override
   Future<Either<Failure, List<AppContentModel>>> fetchHomePage() async {
     try {
+      List<AppContentModel> homePageData = [];
       final response = await firestore
           .collection(FirebaseKeys.homePageCollection)
           .doc(FirebaseKeys.homePageContents)
           .get();
-      final array = response.data()?['contents'];
-      final homePageData =
-          array.map((e) => AppContentModel.fromMap(e)).toList();
+      final List array = response.data()?['contents'];
+      array.forEach((e) => homePageData.add(AppContentModel.fromMap(e)));
       return Right(homePageData);
     } on FirebaseException catch (e) {
       return Left(
@@ -40,7 +40,11 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
         ),
       );
     } catch (e) {
-      return Left(GenericFailure(message: e.toString()));
+      return Left(
+        GenericFailure(
+          message: e.toString(),
+        ),
+      );
     }
   }
 }
