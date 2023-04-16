@@ -2,10 +2,7 @@ class Failure {
   final String? message;
   final String? code;
 
-  Failure({
-    this.message,
-    this.code,
-  });
+  Failure({this.message, this.code});
 
   @override
   bool operator ==(covariant Failure other) {
@@ -20,6 +17,7 @@ class Failure {
 
 class GenericFailure extends Failure {
   GenericFailure({required super.message, super.code});
+
   @override
   bool operator ==(covariant GenericFailure other) {
     if (identical(this, other)) return true;
@@ -33,6 +31,7 @@ class GenericFailure extends Failure {
 
 class NetworkFailure extends Failure {
   NetworkFailure({required super.message, super.code});
+
   @override
   bool operator ==(covariant NetworkFailure other) {
     if (identical(this, other)) return true;
