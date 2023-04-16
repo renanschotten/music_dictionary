@@ -15,7 +15,9 @@ Future<void> init() async {
     );
   } else {
     getIt.registerLazySingleton<MusicDictionaryDatasource>(
-      () => FirestoreMusicDictionaryDatasource(),
+      () => FirestoreMusicDictionaryDatasource(
+          //firestore: FirebaseFirestore.instance,
+          ),
     );
   }
 
