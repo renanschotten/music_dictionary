@@ -88,5 +88,15 @@ void main() {
       expect(response, true);
       verify(() => repository.saveHomePageData(homePageData)).called(1);
     });
+
+    test('Not called when returned cached data', () async {
+      when(() => repository.saveHomePageData(homePageData)).thenAnswer(
+        (_) => Future.value(true),
+      );
+      service.returnedCached = true;
+      final response = await service.saveHomePageData(homePageData);
+      expect(response, true);
+      verifyNever(() => repository.saveHomePageData(homePageData));
+    });
   });
 }
