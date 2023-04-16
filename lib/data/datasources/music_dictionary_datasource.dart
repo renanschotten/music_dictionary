@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+
 import 'package:music_dictionary/data/models/app_content_model.dart';
 import 'package:music_dictionary/shared/constants/firebase_keys.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
@@ -20,7 +21,12 @@ class MockMusicDictionaryDatasource implements MusicDictionaryDatasource {
 }
 
 class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
+  /* FirestoreMusicDictionaryDatasource({
+    required this.firestore,
+  }); */
+
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
   @override
   Future<Either<Failure, List<AppContentModel>>> fetchHomePage() async {
     try {
