@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_dictionary/domain/entities/app_content.dart';
+import 'package:music_dictionary/domain/entities/chords.dart';
 import 'package:music_dictionary/domain/repositories/music_dictionary_repository.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
@@ -14,11 +15,13 @@ void main() {
   late MusicDictionaryService service;
   late Failure failure;
   late List<AppContent> homePageData;
+  late List<Chord> chords;
   setUp(() {
     repository = MockMusicDictionaryRepository();
     service = MusicDictionaryService(repository: repository);
     failure = Failure();
     homePageData = [AppContent(name: 'Acordes', path: '/chords')];
+    chords = [Chord(name: 'name', images: [], description: 'description')];
   });
 
   group('FetchHomePage', () {
@@ -98,5 +101,54 @@ void main() {
       expect(response, true);
       verifyNever(() => repository.saveHomePageData(homePageData));
     });
+  });
+
+  group('FetchChordsPage', () {
+    test(
+      'FetchCachedChordsPage return Chords and FetchChordsPage is not called',
+      () async {
+        when(() => repository.fetchCachedChordsPage()).thenAnswer(
+          (_) => Future.value(chords),
+        );
+        when(() => repository.fetchChordsPage()).thenAnswer(
+          (_) => Future.value(Left(failure)),
+        );
+        final response = await service.fetchChordsPage();
+        expect(response.fold((l) => l, (r) => r), chords);
+        verify(() => repository.fetchCachedChordsPage()).called(1);
+        verifyNever(() => repository.fetchChordsPage());
+      },
+    );
+    test(
+      'FetchCachedChordsPage return null and FetchChordsPage return Failure',
+      () async {
+        when(() => repository.fetchCachedChordsPage()).thenAnswer(
+          (_) => Future.value(null),
+        );
+        when(() => repository.fetchChordsPage()).thenAnswer(
+          (_) => Future.value(Left(failure)),
+        );
+        final response = await service.fetchChordsPage();
+        expect(response.fold((l) => l, (r) => r), failure);
+        verify(() => repository.fetchCachedChordsPage()).called(1);
+        verify(() => repository.fetchChordsPage()).called(1);
+      },
+    );
+
+    test(
+      'FetchCachedChordsPage return null and FetchChordsPage return Success',
+      () async {
+        when(() => repository.fetchCachedChordsPage()).thenAnswer(
+          (_) => Future.value(null),
+        );
+        when(() => repository.fetchChordsPage()).thenAnswer(
+          (_) => Future.value(Right(chords)),
+        );
+        final response = await service.fetchChordsPage();
+        expect(response.fold((l) => l, (r) => r), chords);
+        verify(() => repository.fetchCachedChordsPage()).called(1);
+        verify(() => repository.fetchChordsPage()).called(1);
+      },
+    );
   });
 }
