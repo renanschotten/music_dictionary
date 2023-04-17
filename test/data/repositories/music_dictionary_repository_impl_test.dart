@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_dictionary/data/datasources/music_dictionary_datasource.dart';
 import 'package:music_dictionary/data/models/app_content_model.dart';
+import 'package:music_dictionary/data/models/chord_model.dart';
 import 'package:music_dictionary/data/persistence/music_dictionary_persistence.dart';
 import 'package:music_dictionary/data/repositories/music_dictionary_repository_impl.dart';
 import 'package:music_dictionary/domain/entities/app_content.dart';
@@ -24,6 +25,9 @@ void main() {
   final appContentModel = [AppContentModel(name: 'Acordes', path: '/chords')];
   final appContentEntity = [AppContent(name: 'Acordes', path: '/chords')];
   final failure = Failure();
+  final chords = [
+    ChordModel(name: 'A', images: ['images'], description: 'description')
+  ];
 
   group('MusicDictionaryRepositoryImpl', () {
     test('FetchHomePage Failure', () async {
@@ -72,6 +76,38 @@ void main() {
       );
       final response = await repository.saveHomePageData(appContentEntity);
       expect(response, true);
+    });
+
+    test('FetchChordsPage Failure', () async {
+      when(() => datasource.fetchChordsPage()).thenAnswer(
+        (_) => Future.value(Left(failure)),
+      );
+      final response = await repository.fetchChordsPage();
+      expect(response.fold((l) => l, (r) => r), failure);
+    });
+
+    test('FetchChordsPage Success', () async {
+      when(() => datasource.fetchChordsPage()).thenAnswer(
+        (_) => Future.value(Right(chords)),
+      );
+      final response = await repository.fetchChordsPage();
+      expect(response.fold((l) => l, (r) => r), chords);
+    });
+
+    test('FetchCachedChordsPage Failure', () async {
+      when(() => persistence.fetchChordsPage()).thenAnswer(
+        (_) => Future.value(null),
+      );
+      final response = await repository.fetchCachedChordsPage();
+      expect(response, null);
+    });
+
+    test('FetchCachedChordsPage Success', () async {
+      when(() => persistence.fetchChordsPage()).thenAnswer(
+        (_) => Future.value(chords),
+      );
+      final response = await repository.fetchCachedChordsPage();
+      expect(response, chords);
     });
   });
 }

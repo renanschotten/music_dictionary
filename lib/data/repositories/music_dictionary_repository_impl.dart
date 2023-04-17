@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:music_dictionary/data/datasources/music_dictionary_datasource.dart';
+import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/domain/repositories/music_dictionary_repository.dart';
 import 'package:music_dictionary/domain/entities/app_content.dart';
 import 'package:music_dictionary/data/persistence/music_dictionary_persistence.dart';
@@ -28,5 +29,15 @@ class MusicDictionaryRepositoryImpl implements MusicDictionaryRepository {
   @override
   Future<bool> saveHomePageData(List<AppContent> homePageData) async {
     return await _persistence.saveHomePageData(homePageData);
+  }
+
+  @override
+  Future<List<Chord>?> fetchCachedChordsPage() async {
+    return await _persistence.fetchChordsPage();
+  }
+
+  @override
+  Future<Either<Failure, List<Chord>>> fetchChordsPage() {
+    return _datasource.fetchChordsPage();
   }
 }
