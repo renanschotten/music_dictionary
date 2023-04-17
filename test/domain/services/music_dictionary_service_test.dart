@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_dictionary/domain/entities/app_content.dart';
-import 'package:music_dictionary/domain/entities/chords.dart';
+import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/domain/repositories/music_dictionary_repository.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
 import 'package:music_dictionary/shared/core/failure.dart';

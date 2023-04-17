@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:music_dictionary/domain/entities/app_content.dart';
-import 'package:music_dictionary/domain/entities/chords.dart';
+import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
 abstract class MusicDictionaryRepository {
