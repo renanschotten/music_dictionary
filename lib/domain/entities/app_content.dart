@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class AppContent {
   final String name;
   final String path;
@@ -16,6 +18,25 @@ class AppContent {
       path: path ?? this.path,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'path': path,
+    };
+  }
+
+  factory AppContent.fromMap(Map<String, dynamic> map) {
+    return AppContent(
+      name: map['name'] as String,
+      path: map['path'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory AppContent.fromJson(String source) =>
+      AppContent.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() => 'AppContent(name: $name, path: $path)';

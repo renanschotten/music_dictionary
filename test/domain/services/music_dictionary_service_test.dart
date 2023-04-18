@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -5,6 +7,7 @@ import 'package:music_dictionary/domain/entities/app_content.dart';
 import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/domain/repositories/music_dictionary_repository.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
+import 'package:music_dictionary/shared/constants/shared_preferences_keys.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
 class MockMusicDictionaryRepository extends Mock
@@ -16,12 +19,17 @@ void main() {
   late Failure failure;
   late List<AppContent> homePageData;
   late List<Chord> chords;
+  late String key;
+  late String json;
+
   setUp(() {
     repository = MockMusicDictionaryRepository();
     service = MusicDictionaryService(repository: repository);
     failure = Failure();
     homePageData = [AppContent(name: 'Acordes', path: '/chords')];
     chords = [Chord(name: 'name', images: [], description: 'description')];
+    key = LocalStorageKeys.homePageData;
+    json = jsonEncode([AppContent(name: 'Acordes', path: '/chords').toMap()]);
   });
 
   group('FetchHomePage', () {
@@ -38,6 +46,7 @@ void main() {
         expect(response.fold((l) => l, (r) => r), homePageData);
         verify(() => repository.fetchCachedHomePage()).called(1);
         verifyNever(() => repository.fetchHomePage());
+        verifyNever(() => repository.saveAppData(json: json, key: key));
       },
     );
     test(
@@ -53,11 +62,12 @@ void main() {
         expect(response.fold((l) => l, (r) => r), failure);
         verify(() => repository.fetchCachedHomePage()).called(1);
         verify(() => repository.fetchHomePage()).called(1);
+        verifyNever(() => repository.saveAppData(json: json, key: key));
       },
     );
 
     test(
-      'FetchCachedHomePage return null and FetchHomePage return Success',
+      'FetchCachedHomePage return null and FetchHomePage return Success and call SaveAppData',
       () async {
         when(() => repository.fetchCachedHomePage()).thenAnswer(
           (_) => Future.value(null),
@@ -65,41 +75,36 @@ void main() {
         when(() => repository.fetchHomePage()).thenAnswer(
           (_) => Future.value(Right(homePageData)),
         );
+        when(() => repository.saveAppData(
+              key: 'HOME_PAGE_DATA',
+              json: json,
+            )).thenAnswer((invocation) => Future.value(true));
         final response = await service.fetchHomePage();
         expect(response.fold((l) => l, (r) => r), homePageData);
         verify(() => repository.fetchCachedHomePage()).called(1);
         verify(() => repository.fetchHomePage()).called(1);
+        verify(() => repository.saveAppData(json: json, key: key)).called(1);
       },
     );
   });
 
-  group('SaveHomePage', () {
+  group('SaveAppData', () {
     test('Failure', () async {
-      when(() => repository.saveHomePageData(homePageData)).thenAnswer(
+      when(() => repository.saveAppData(key: key, json: json)).thenAnswer(
         (_) => Future.value(false),
       );
-      final response = await service.saveHomePageData(homePageData);
+      final response = await service.saveAppData(key: key, json: json);
       expect(response, false);
-      verify(() => repository.saveHomePageData(homePageData)).called(1);
+      verify(() => repository.saveAppData(key: key, json: json)).called(1);
     });
 
     test('Success', () async {
-      when(() => repository.saveHomePageData(homePageData)).thenAnswer(
+      when(() => repository.saveAppData(key: key, json: json)).thenAnswer(
         (_) => Future.value(true),
       );
-      final response = await service.saveHomePageData(homePageData);
+      final response = await service.saveAppData(key: key, json: json);
       expect(response, true);
-      verify(() => repository.saveHomePageData(homePageData)).called(1);
-    });
-
-    test('Not called when returned cached data', () async {
-      when(() => repository.saveHomePageData(homePageData)).thenAnswer(
-        (_) => Future.value(true),
-      );
-      service.returnedCached = true;
-      final response = await service.saveHomePageData(homePageData);
-      expect(response, true);
-      verifyNever(() => repository.saveHomePageData(homePageData));
+      verify(() => repository.saveAppData(key: key, json: json)).called(1);
     });
   });
 

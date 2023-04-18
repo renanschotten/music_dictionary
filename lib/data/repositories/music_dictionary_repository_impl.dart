@@ -27,11 +27,6 @@ class MusicDictionaryRepositoryImpl implements MusicDictionaryRepository {
   }
 
   @override
-  Future<bool> saveHomePageData(List<AppContent> homePageData) async {
-    return await _persistence.saveHomePageData(homePageData);
-  }
-
-  @override
   Future<List<Chord>?> fetchCachedChordsPage() async {
     return await _persistence.fetchChordsPage();
   }
@@ -39,5 +34,10 @@ class MusicDictionaryRepositoryImpl implements MusicDictionaryRepository {
   @override
   Future<Either<Failure, List<Chord>>> fetchChordsPage() {
     return _datasource.fetchChordsPage();
+  }
+
+  @override
+  Future<bool> saveAppData({required String key, required String json}) async {
+    return await _persistence.saveAppData(key: key, json: json);
   }
 }

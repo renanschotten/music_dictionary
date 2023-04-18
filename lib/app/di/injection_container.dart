@@ -4,11 +4,13 @@ import 'package:music_dictionary/data/persistence/music_dictionary_persistence.d
 import 'package:music_dictionary/data/repositories/music_dictionary_repository_impl.dart';
 import 'package:music_dictionary/domain/repositories/music_dictionary_repository.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 GetIt getIt = GetIt.instance;
 const mock = false;
 
 Future<void> init() async {
+  await _initSharedPref();
   if (mock) {
     getIt.registerLazySingleton<MusicDictionaryDatasource>(
       () => MockMusicDictionaryDatasource(),
@@ -20,7 +22,9 @@ Future<void> init() async {
   }
 
   getIt.registerLazySingleton(
-    () => SharedPrefsMusicDictionaryPersistence(),
+    () => SharedPrefsMusicDictionaryPersistence(
+      sharedPreferences: getIt<SharedPreferences>(),
+    ),
   );
 
   getIt.registerLazySingleton<MusicDictionaryRepository>(
@@ -35,4 +39,9 @@ Future<void> init() async {
       repository: getIt<MusicDictionaryRepository>(),
     ),
   );
+}
+
+Future<void> _initSharedPref() async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
 }

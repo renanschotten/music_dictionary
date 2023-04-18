@@ -7,6 +7,7 @@ import 'package:music_dictionary/data/models/chord_model.dart';
 import 'package:music_dictionary/data/persistence/music_dictionary_persistence.dart';
 import 'package:music_dictionary/data/repositories/music_dictionary_repository_impl.dart';
 import 'package:music_dictionary/domain/entities/app_content.dart';
+import 'package:music_dictionary/shared/constants/shared_preferences_keys.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
 class MockFirestoreMusicDictionaryDatasource extends Mock
@@ -28,6 +29,8 @@ void main() {
   final chords = [
     ChordModel(name: 'A', images: ['images'], description: 'description')
   ];
+  final json = AppContentModel(name: 'Acordes', path: '/chords').toJson();
+  const key = LocalStorageKeys.homePageData;
 
   group('MusicDictionaryRepositoryImpl', () {
     test('FetchHomePage Failure', () async {
@@ -62,19 +65,19 @@ void main() {
       expect(response, appContentModel);
     });
 
-    test('SaveHomePageData Failure', () async {
-      when(() => persistence.saveHomePageData(appContentEntity)).thenAnswer(
+    test('SaveAppData Failure', () async {
+      when(() => persistence.saveAppData(key: key, json: json)).thenAnswer(
         (_) => Future.value(false),
       );
-      final response = await repository.saveHomePageData(appContentEntity);
+      final response = await repository.saveAppData(key: key, json: json);
       expect(response, false);
     });
 
-    test('SaveHomePageData Success', () async {
-      when(() => persistence.saveHomePageData(appContentEntity)).thenAnswer(
+    test('SaveAppData Success', () async {
+      when(() => persistence.saveAppData(key: key, json: json)).thenAnswer(
         (_) => Future.value(true),
       );
-      final response = await repository.saveHomePageData(appContentEntity);
+      final response = await repository.saveAppData(key: key, json: json);
       expect(response, true);
     });
 

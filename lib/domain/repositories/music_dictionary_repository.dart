@@ -8,7 +8,7 @@ abstract class MusicDictionaryRepository {
 
   Future<List<AppContent>?> fetchCachedHomePage();
 
-  Future<bool> saveHomePageData(List<AppContent> homePageData);
+  Future<bool> saveAppData({required String key, required String json});
 
   Future<Either<Failure, List<Chord>>> fetchChordsPage();
 

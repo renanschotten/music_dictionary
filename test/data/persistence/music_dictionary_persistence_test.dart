@@ -18,7 +18,9 @@ void main() {
 
   setUp(() {
     sharedPrefs = MockSharedPrefs();
-    persistence = SharedPrefsMusicDictionaryPersistence();
+    persistence = SharedPrefsMusicDictionaryPersistence(
+      sharedPreferences: sharedPrefs,
+    );
     homePageData = [AppContent(name: 'Acordes', path: '/chords')];
     json = jsonEncode(homePageData
         .map((e) => AppContentModel.fromEntity(e).toMap())
@@ -26,20 +28,15 @@ void main() {
   });
 
   group('SharedPrefsMusicDictionaryPersistence', () {
-    test('SaveHomePageData', () async {
+    test('SaveAppData', () async {
       when(
         () => sharedPrefs.setString(LocalStorageKeys.homePageData, json),
-      ).thenAnswer((_) => Future.value(false));
-
-      var value = persistence.sharedPreferences.getString(
-        LocalStorageKeys.homePageData,
+      ).thenAnswer((_) => Future.value(true));
+      final response = await persistence.saveAppData(
+        key: LocalStorageKeys.homePageData,
+        json: json,
       );
-      expect(value, null);
-      final a = await persistence.saveHomePageData(homePageData);
-      var response = persistence.sharedPreferences.getString(
-        LocalStorageKeys.homePageData,
-      );
-      expect(response, json);
+      expect(response, true);
     });
   });
 }

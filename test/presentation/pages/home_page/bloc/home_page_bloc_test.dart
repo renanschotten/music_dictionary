@@ -40,9 +40,6 @@ void main() {
         when(() => service.fetchHomePage()).thenAnswer(
           (_) => Future.value(Right(homePageData)),
         );
-        when(() => service.saveHomePageData(homePageData)).thenAnswer(
-          (_) => Future.value(true),
-        );
       },
       act: (bloc) => bloc.add(FetchHomePageEvent()),
       expect: () => [isA<HomePageLoading>(), isA<HomePageSuccess>()],
