@@ -20,7 +20,8 @@ void main() {
   late List<AppContent> homePageData;
   late List<Chord> chords;
   late String key;
-  late String json;
+  late String jsonHomePage;
+  late String jsonChordsPage;
 
   setUp(() {
     repository = MockMusicDictionaryRepository();
@@ -29,7 +30,10 @@ void main() {
     homePageData = [AppContent(name: 'Acordes', path: '/chords')];
     chords = [Chord(name: 'name', images: [], description: 'description')];
     key = LocalStorageKeys.homePageData;
-    json = jsonEncode([AppContent(name: 'Acordes', path: '/chords').toMap()]);
+    jsonHomePage =
+        jsonEncode([AppContent(name: 'Acordes', path: '/chords').toMap()]);
+    jsonChordsPage = jsonEncode(
+        [Chord(name: 'name', images: [], description: 'description').toMap()]);
   });
 
   group('FetchHomePage', () {
@@ -46,7 +50,7 @@ void main() {
         expect(response.fold((l) => l, (r) => r), homePageData);
         verify(() => repository.fetchCachedHomePage()).called(1);
         verifyNever(() => repository.fetchHomePage());
-        verifyNever(() => repository.saveAppData(json: json, key: key));
+        verifyNever(() => repository.saveAppData(json: jsonHomePage, key: key));
       },
     );
     test(
@@ -62,7 +66,7 @@ void main() {
         expect(response.fold((l) => l, (r) => r), failure);
         verify(() => repository.fetchCachedHomePage()).called(1);
         verify(() => repository.fetchHomePage()).called(1);
-        verifyNever(() => repository.saveAppData(json: json, key: key));
+        verifyNever(() => repository.saveAppData(json: jsonHomePage, key: key));
       },
     );
 
@@ -77,34 +81,39 @@ void main() {
         );
         when(() => repository.saveAppData(
               key: 'HOME_PAGE_DATA',
-              json: json,
+              json: jsonHomePage,
             )).thenAnswer((invocation) => Future.value(true));
         final response = await service.fetchHomePage();
         expect(response.fold((l) => l, (r) => r), homePageData);
         verify(() => repository.fetchCachedHomePage()).called(1);
         verify(() => repository.fetchHomePage()).called(1);
-        verify(() => repository.saveAppData(json: json, key: key)).called(1);
+        verify(() => repository.saveAppData(json: jsonHomePage, key: key))
+            .called(1);
       },
     );
   });
 
   group('SaveAppData', () {
     test('Failure', () async {
-      when(() => repository.saveAppData(key: key, json: json)).thenAnswer(
+      when(() => repository.saveAppData(key: key, json: jsonHomePage))
+          .thenAnswer(
         (_) => Future.value(false),
       );
-      final response = await service.saveAppData(key: key, json: json);
+      final response = await service.saveAppData(key: key, json: jsonHomePage);
       expect(response, false);
-      verify(() => repository.saveAppData(key: key, json: json)).called(1);
+      verify(() => repository.saveAppData(key: key, json: jsonHomePage))
+          .called(1);
     });
 
     test('Success', () async {
-      when(() => repository.saveAppData(key: key, json: json)).thenAnswer(
+      when(() => repository.saveAppData(key: key, json: jsonHomePage))
+          .thenAnswer(
         (_) => Future.value(true),
       );
-      final response = await service.saveAppData(key: key, json: json);
+      final response = await service.saveAppData(key: key, json: jsonHomePage);
       expect(response, true);
-      verify(() => repository.saveAppData(key: key, json: json)).called(1);
+      verify(() => repository.saveAppData(key: key, json: jsonHomePage))
+          .called(1);
     });
   });
 
@@ -141,7 +150,7 @@ void main() {
     );
 
     test(
-      'FetchCachedChordsPage return null and FetchChordsPage return Success',
+      'FetchCachedChordsPage return null and FetchChordsPage return Success and call SaveAppData',
       () async {
         when(() => repository.fetchCachedChordsPage()).thenAnswer(
           (_) => Future.value(null),
@@ -149,10 +158,18 @@ void main() {
         when(() => repository.fetchChordsPage()).thenAnswer(
           (_) => Future.value(Right(chords)),
         );
+        when(() => repository.saveAppData(
+              key: LocalStorageKeys.chordsPageData,
+              json: jsonChordsPage,
+            )).thenAnswer((_) => Future.value(true));
         final response = await service.fetchChordsPage();
         expect(response.fold((l) => l, (r) => r), chords);
         verify(() => repository.fetchCachedChordsPage()).called(1);
         verify(() => repository.fetchChordsPage()).called(1);
+        verify(() => repository.saveAppData(
+              json: jsonChordsPage,
+              key: LocalStorageKeys.chordsPageData,
+            )).called(1);
       },
     );
   });

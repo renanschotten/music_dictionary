@@ -37,10 +37,21 @@ class MusicDictionaryService {
   }
 
   Future<Either<Failure, List<Chord>>> fetchChordsPage() async {
-    final response = await repository.fetchCachedChordsPage();
-    if (response != null) {
-      return Right(response);
-    }
-    return await repository.fetchChordsPage();
+    final cachedResponse = await repository.fetchCachedChordsPage();
+    if (cachedResponse != null) return Right(cachedResponse);
+    final response = await repository.fetchChordsPage();
+    response.fold(
+      (l) => null,
+      (r) async {
+        List<Map<String, dynamic>> mapList = [];
+        r.forEach((e) => mapList.add(e.toMap()));
+        final json = jsonEncode(mapList);
+        await saveAppData(
+          key: LocalStorageKeys.chordsPageData,
+          json: json,
+        );
+      },
+    );
+    return response;
   }
 }

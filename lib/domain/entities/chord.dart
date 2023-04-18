@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 class Chord {
@@ -38,4 +40,25 @@ class Chord {
 
   @override
   int get hashCode => name.hashCode ^ images.hashCode ^ description.hashCode;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'images': images,
+      'description': description,
+    };
+  }
+
+  factory Chord.fromMap(Map<String, dynamic> map) {
+    return Chord(
+      name: map['name'] as String,
+      images: List<String>.from((map['images'] as List<String>)),
+      description: map['description'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Chord.fromJson(String source) =>
+      Chord.fromMap(json.decode(source) as Map<String, dynamic>);
 }
