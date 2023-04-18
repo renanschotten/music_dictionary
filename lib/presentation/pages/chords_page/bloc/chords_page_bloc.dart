@@ -12,12 +12,9 @@ class ChordsPageBloc extends Bloc<ChordsPageEvent, ChordsPageState> {
     on<FetchChordsPageEvent>((event, emit) async {
       emit(ChordsPageLoading());
       final response = await service.fetchChordsPage();
-      emit(await response.fold(
+      emit(response.fold(
         (l) => ChordsPageFailure(),
-        (r) async {
-          //await service.saveHomePageData(r);
-          return ChordsPageSuccess(response: r);
-        },
+        (r) => ChordsPageSuccess(response: r),
       ));
     });
   }

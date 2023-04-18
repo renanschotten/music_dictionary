@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_dictionary/presentation/pages/chords_page/bloc/chords_page_bloc.dart';
 import 'package:music_dictionary/presentation/widgets/error/error_page_widget.dart';
 import 'package:music_dictionary/presentation/widgets/loading/loading_widget.dart';
+import 'package:music_dictionary/shared/config/routes.dart';
 
 class ChordsPage extends StatefulWidget {
   const ChordsPage({Key? key}) : super(key: key);
@@ -50,11 +51,15 @@ class _ChordsPageState extends State<ChordsPage> {
                     try {
                       Navigator.pushNamed(
                         context,
-                        '',
+                        Routes.chordDetails,
+                        arguments: state.response[index],
                       );
                     } catch (_) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Rota nao encontrada')));
+                        SnackBar(
+                          content: Text('Rota nao encontrada'),
+                        ),
+                      );
                     }
                   },
                 ),
