@@ -32,11 +32,8 @@ class SharedPrefsMusicDictionaryPersistence
   @override
   Future<List<AppContentModel>?> fetchHomePage() async {
     try {
-      final json = sharedPreferences.getString(
-        LocalStorageKeys.homePageData,
-      );
+      final json = sharedPreferences.getString(LocalStorageKeys.homePageData);
       if (json == null || json.isEmpty) return null;
-
       final List response = jsonDecode(json);
       final List<AppContentModel> homePageData =
           response.map((e) => AppContentModel.fromMap(e)).toList();

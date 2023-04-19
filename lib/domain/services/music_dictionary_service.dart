@@ -19,9 +19,7 @@ class MusicDictionaryService {
       (l) => null,
       (r) async {
         List<Map<String, dynamic>> mapList = [];
-        r.forEach(
-          (e) => mapList.add(e.toMap()),
-        );
+        r.forEach((e) => mapList.add(e.toMap()));
         final json = jsonEncode(mapList);
         await saveAppData(
           key: LocalStorageKeys.homePageData,

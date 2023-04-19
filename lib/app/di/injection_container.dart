@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get_it/get_it.dart';
 import 'package:music_dictionary/data/datasources/music_dictionary_datasource.dart';
 import 'package:music_dictionary/data/persistence/music_dictionary_persistence.dart';
@@ -17,7 +18,9 @@ Future<void> init() async {
     );
   } else {
     getIt.registerLazySingleton<MusicDictionaryDatasource>(
-      () => FirestoreMusicDictionaryDatasource(),
+      () => FirestoreMusicDictionaryDatasource(
+        firestore: getIt<FirebaseFirestore>(),
+      ),
     );
   }
 
@@ -44,4 +47,9 @@ Future<void> init() async {
 Future<void> _initSharedPref() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+}
+
+Future<void> _initFirebaseFirestore() async {
+  FirebaseFirestore instance = FirebaseFirestore.instance;
+  getIt.registerLazySingleton<FirebaseFirestore>(() => instance);
 }

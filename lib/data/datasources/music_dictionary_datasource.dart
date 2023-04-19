@@ -32,7 +32,9 @@ class MockMusicDictionaryDatasource implements MusicDictionaryDatasource {
 }
 
 class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirestoreMusicDictionaryDatasource({required this.firestore});
+
+  final FirebaseFirestore firestore;
 
   @override
   Future<Either<Failure, List<AppContentModel>>> fetchHomePage() async {
@@ -42,7 +44,7 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
           .collection(FirebaseKeys.homePageCollection)
           .doc(FirebaseKeys.homePageContents)
           .get();
-      final List array = response.data()?['contents'];
+      final List array = response.data()?[FirebaseKeys.contents];
       array.forEach((e) => homePageData.add(AppContentModel.fromMap(e)));
       return Right(homePageData);
     } on FirebaseException catch (e) {
@@ -69,7 +71,7 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
           .collection(FirebaseKeys.chordsPageCollection)
           .doc(FirebaseKeys.chordsPageContents)
           .get();
-      final List array = response.data()?['contents'];
+      final List array = response.data()?[FirebaseKeys.contents];
       array.forEach((e) => chordsPageData.add(ChordModel.fromMap(e)));
       return Right(chordsPageData);
     } on FirebaseException catch (e) {
