@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_dictionary/presentation/pages/chords_page/bloc/chords_page_bloc.dart';
+import 'package:music_dictionary/presentation/widgets/app_bar/custom_app_bar.dart';
 import 'package:music_dictionary/presentation/widgets/error/error_page_widget.dart';
 import 'package:music_dictionary/presentation/widgets/loading/loading_widget.dart';
 import 'package:music_dictionary/shared/config/routes.dart';
@@ -26,9 +27,7 @@ class _ChordsPageState extends State<ChordsPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          title: Text('Acordes'),
-        ),
+        appBar: CustomAppBar(title: 'Acordes'),
         body: BlocBuilder<ChordsPageBloc, ChordsPageState>(
           bloc: bloc,
           builder: (context, state) {

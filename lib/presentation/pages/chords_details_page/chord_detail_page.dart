@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:music_dictionary/domain/entities/chord.dart';
+import 'package:music_dictionary/presentation/widgets/app_bar/custom_app_bar.dart';
 
 class ChordDetailsPage extends StatelessWidget {
   const ChordDetailsPage({super.key, required this.chord});
@@ -9,9 +10,7 @@ class ChordDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(chord.name),
-      ),
+      appBar: CustomAppBar(title: chord.name),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: SingleChildScrollView(

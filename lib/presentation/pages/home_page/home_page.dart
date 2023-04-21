@@ -1,6 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:music_dictionary/presentation/pages/home_page/bloc/home_page_bloc.dart';
+import 'package:music_dictionary/presentation/widgets/app_bar/custom_app_bar.dart';
 import 'package:music_dictionary/presentation/widgets/error/error_page_widget.dart';
 import 'package:music_dictionary/presentation/widgets/loading/loading_widget.dart';
 
@@ -26,7 +29,7 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       top: true,
       child: Scaffold(
-        appBar: AppBar(title: Text('Folha de Dicas Musicais')),
+        appBar: CustomAppBar(title: 'Dicionário Musical'),
         body: BlocBuilder<HomePageBloc, HomePageState>(
           bloc: BlocProvider.of<HomePageBloc>(context),
           builder: (context, state) {
@@ -43,8 +46,17 @@ class _HomePageState extends State<HomePage> {
                 shrinkWrap: true,
                 itemCount: state.response.length,
                 itemBuilder: (context, index) => ListTile(
-                  leading: Text(state.response[index].name),
-                  trailing: Icon(Icons.arrow_right),
+                  leading: Text(
+                    state.response[index].name,
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_right,
+                  ),
                   onTap: () {
                     try {
                       Navigator.pushNamed(
@@ -53,7 +65,10 @@ class _HomePageState extends State<HomePage> {
                       );
                     } catch (_) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Rota nao encontrada')));
+                        SnackBar(
+                          content: Text('Rota nao encontrada'),
+                        ),
+                      );
                     }
                   },
                 ),
