@@ -6,4 +6,10 @@ class AppTextStyles {
     fontWeight: FontWeight.w900,
     fontSize: 24,
   );
+
+  static const TextStyle montserrat16w500 = TextStyle(
+    fontFamily: 'Montserrat',
+    fontWeight: FontWeight.w500,
+    fontSize: 16,
+  );
 }

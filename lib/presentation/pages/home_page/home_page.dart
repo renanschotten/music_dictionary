@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:music_dictionary/presentation/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:music_dictionary/presentation/widgets/app_bar/custom_app_bar.dart';
 import 'package:music_dictionary/presentation/widgets/error/error_page_widget.dart';
+import 'package:music_dictionary/presentation/widgets/list_tile/custom_list_tile.dart';
 import 'package:music_dictionary/presentation/widgets/loading/loading_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -45,18 +46,8 @@ class _HomePageState extends State<HomePage> {
               return ListView.builder(
                 shrinkWrap: true,
                 itemCount: state.response.length,
-                itemBuilder: (context, index) => ListTile(
-                  leading: Text(
-                    state.response[index].name,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
-                  ),
-                  trailing: Icon(
-                    Icons.arrow_right,
-                  ),
+                itemBuilder: (context, index) => CustomListTile(
+                  title: state.response[index].name,
                   onTap: () {
                     try {
                       Navigator.pushNamed(
