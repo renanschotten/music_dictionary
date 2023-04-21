@@ -12,6 +12,7 @@ const mock = false;
 
 Future<void> init() async {
   await _initSharedPref();
+  await _initFirebaseFirestore();
   if (mock) {
     getIt.registerLazySingleton<MusicDictionaryDatasource>(
       () => MockMusicDictionaryDatasource(),
