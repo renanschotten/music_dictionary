@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_dictionary/app/di/injection_container.dart';
 
 import 'package:music_dictionary/presentation/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:music_dictionary/presentation/widgets/app_bar/custom_app_bar.dart';
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bloc = BlocProvider.of<HomePageBloc>(context);
+    bloc = getIt<HomePageBloc>();
     bloc.add(FetchHomePageEvent());
   }
 
@@ -32,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: CustomAppBar(title: 'Dicionário Musical'),
         body: BlocBuilder<HomePageBloc, HomePageState>(
-          bloc: BlocProvider.of<HomePageBloc>(context),
+          bloc: getIt<HomePageBloc>(),
           builder: (context, state) {
             if (state is HomePageLoading) {
               return LoadingWidget();

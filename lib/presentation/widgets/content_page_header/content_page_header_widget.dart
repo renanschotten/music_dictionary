@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:music_dictionary/app/di/injection_container.dart';
 import 'package:music_dictionary/presentation/pages/content_page/bloc/content_page_bloc.dart';
 import 'package:music_dictionary/shared/style/app_text_styles.dart';
 
@@ -16,7 +16,7 @@ class _ContentPageHeaderWidgetState extends State<ContentPageHeaderWidget> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    bloc = BlocProvider.of<ContentPageBloc>(context);
+    bloc = getIt<ContentPageBloc>();
   }
 
   @override
