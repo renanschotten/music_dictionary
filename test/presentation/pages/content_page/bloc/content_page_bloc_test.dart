@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
-import 'package:music_dictionary/presentation/pages/chords_page/bloc/chords_page_bloc.dart';
+import 'package:music_dictionary/presentation/pages/content_page/bloc/content_page_bloc.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
 class MockMusicDictionaryService extends Mock
@@ -12,7 +12,7 @@ class MockMusicDictionaryService extends Mock
 
 void main() {
   late MusicDictionaryService service;
-  late ChordsPageBloc bloc;
+  late ContentPageBloc bloc;
   final Failure failure = GenericFailure(message: 'message');
   final List<Chord> chordsPageData = [
     Chord(name: 'name', images: ['images'], description: 'description')
@@ -20,32 +20,32 @@ void main() {
 
   setUp(() {
     service = MockMusicDictionaryService();
-    bloc = ChordsPageBloc(service: service);
+    bloc = ContentPageBloc(service: service);
   });
 
-  group('ChordsPageBloc', () {
-    blocTest<ChordsPageBloc, ChordsPageState>(
-      'Should emit [ChordsPageLoading, ChordsPageFailure] when return Failure from service',
+  group('ContentPageBloc', () {
+    blocTest<ContentPageBloc, ContentPageState>(
+      'Should emit [ContentPageLoading, ContentPageFailure] when return Failure from service',
       build: () => bloc,
       setUp: () => when(() => service.fetchChordsPage()).thenAnswer(
         (_) => Future.value(
           Left(failure),
         ),
       ),
-      act: (bloc) => bloc.add(FetchChordsPageEvent()),
-      expect: () => [isA<ChordsPageLoading>(), isA<ChordsPageFailure>()],
+      act: (bloc) => bloc.add(FetchContentPageEvent()),
+      expect: () => [isA<ContentPageLoading>(), isA<ContentPageFailure>()],
     );
 
-    blocTest<ChordsPageBloc, ChordsPageState>(
-      'Should emit [ChordsPageLoading, ChordsPageSuccess] when return List<Chord> from service',
+    blocTest<ContentPageBloc, ContentPageState>(
+      'Should emit [ContentPageLoading, ContentPageSuccess] when return List<Chord> from service',
       build: () => bloc,
       setUp: () => when(() => service.fetchChordsPage()).thenAnswer(
         (_) => Future.value(
           Right(chordsPageData),
         ),
       ),
-      act: (bloc) => bloc.add(FetchChordsPageEvent()),
-      expect: () => [isA<ChordsPageLoading>(), isA<ChordsPageSuccess>()],
+      act: (bloc) => bloc.add(FetchContentPageEvent()),
+      expect: () => [isA<ContentPageLoading>(), isA<ContentPageSuccess>()],
     );
 
     tearDown(() => bloc.close());
