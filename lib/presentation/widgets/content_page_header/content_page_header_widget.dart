@@ -32,10 +32,10 @@ class _ContentPageHeaderWidgetState extends State<ContentPageHeaderWidget> {
         separatorBuilder: (_, __) => SizedBox(width: 8),
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: bloc.chords.length,
+        itemCount: bloc.content.length,
         itemBuilder: (context, index) => InkWell(
           onTap: () {
-            previousIndex = bloc.selectedChordIndex.value;
+            previousIndex = bloc.selectedContentIndex.value;
             updateScrollPosition(index);
             bloc.updateSelectedChord(index);
           },
@@ -45,10 +45,10 @@ class _ContentPageHeaderWidgetState extends State<ContentPageHeaderWidget> {
             child: Align(
               alignment: Alignment.center,
               child: ValueListenableBuilder<int>(
-                valueListenable: bloc.selectedChordIndex,
-                builder: (_, selectedChordIndex, __) => Text(
-                  bloc.chords[index].name,
-                  style: index == selectedChordIndex
+                valueListenable: bloc.selectedContentIndex,
+                builder: (_, selectedContentIndex, __) => Text(
+                  bloc.content[index].name,
+                  style: index == selectedContentIndex
                       ? AppTextStyles.montserrat24w900
                       : AppTextStyles.montserrat16w500,
                 ),

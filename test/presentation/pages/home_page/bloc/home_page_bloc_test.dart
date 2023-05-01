@@ -15,7 +15,7 @@ void main() {
   late HomePageBloc bloc;
   final Failure failure = GenericFailure(message: 'message');
   final List<HomePageContent> homePageData = [
-    HomePageContent(name: 'name', path: 'path')
+    HomePageContent(name: 'name', id: 'path')
   ];
 
   setUp(() {

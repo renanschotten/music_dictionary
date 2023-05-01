@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:music_dictionary/domain/entities/base_content.dart';
 import 'package:music_dictionary/domain/entities/home_page_content.dart';
-import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
 abstract class MusicDictionaryRepository {
@@ -10,7 +10,9 @@ abstract class MusicDictionaryRepository {
 
   Future<bool> saveAppData({required String key, required String json});
 
-  Future<Either<Failure, List<Chord>>> fetchChordsPage();
+  Future<Either<Failure, List<BaseContent>>> fetchContent({
+    required String id,
+  });
 
-  Future<List<Chord>?> fetchCachedChordsPage();
+  Future<List<BaseContent>?> fetchCachedContent({required String id});
 }

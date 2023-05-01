@@ -8,6 +8,7 @@ import 'package:music_dictionary/presentation/widgets/app_bar/custom_app_bar.dar
 import 'package:music_dictionary/presentation/widgets/error/error_page_widget.dart';
 import 'package:music_dictionary/presentation/widgets/list_tile/custom_list_tile.dart';
 import 'package:music_dictionary/presentation/widgets/loading/loading_widget.dart';
+import 'package:music_dictionary/shared/config/routes.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -53,7 +54,8 @@ class _HomePageState extends State<HomePage> {
                     try {
                       Navigator.pushNamed(
                         context,
-                        state.response[index].path,
+                        Routes.contentDetails,
+                        arguments: state.response[index],
                       );
                     } catch (_) {
                       ScaffoldMessenger.of(context).showSnackBar(

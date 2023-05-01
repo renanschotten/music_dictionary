@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:music_dictionary/domain/entities/base_content.dart';
 import 'package:music_dictionary/domain/entities/home_page_content.dart';
-import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/domain/repositories/music_dictionary_repository.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
 import 'package:music_dictionary/shared/constants/shared_preferences_keys.dart';
@@ -18,22 +18,25 @@ void main() {
   late MusicDictionaryService service;
   late Failure failure;
   late List<HomePageContent> homePageData;
-  late List<Chord> chords;
+  late List<BaseContent> baseContent;
   late String key;
   late String jsonHomePage;
-  late String jsonChordsPage;
+  late String jsonBaseContent;
 
   setUp(() {
     repository = MockMusicDictionaryRepository();
     service = MusicDictionaryService(repository: repository);
     failure = Failure();
-    homePageData = [HomePageContent(name: 'Acordes', path: '/chords')];
-    chords = [Chord(name: 'name', images: [], description: 'description')];
+    homePageData = [HomePageContent(name: 'Acordes', id: '/chords')];
+    baseContent = [
+      BaseContent(name: 'name', images: [], description: 'description')
+    ];
     key = LocalStorageKeys.homePageData;
     jsonHomePage =
-        jsonEncode([HomePageContent(name: 'Acordes', path: '/chords').toMap()]);
-    jsonChordsPage = jsonEncode(
-        [Chord(name: 'name', images: [], description: 'description').toMap()]);
+        jsonEncode([HomePageContent(name: 'Acordes', id: '/chords').toMap()]);
+    jsonBaseContent = jsonEncode([
+      BaseContent(name: 'name', images: [], description: 'description').toMap()
+    ]);
   });
 
   group('FetchHomePage', () {
@@ -117,57 +120,57 @@ void main() {
     });
   });
 
-  group('FetchChordsPage', () {
+  group('FetchContent', () {
     test(
-      'FetchCachedChordsPage return Chords and FetchChordsPage is not called',
+      'FetchCachedContent returns BaseContent for parameter "chords" and FetchContent is not called',
       () async {
-        when(() => repository.fetchCachedChordsPage()).thenAnswer(
-          (_) => Future.value(chords),
+        when(() => repository.fetchCachedContent(id: 'chords')).thenAnswer(
+          (_) => Future.value(baseContent),
         );
-        when(() => repository.fetchChordsPage()).thenAnswer(
+        when(() => repository.fetchContent(id: 'chords')).thenAnswer(
           (_) => Future.value(Left(failure)),
         );
-        final response = await service.fetchChordsPage();
-        expect(response.fold((l) => l, (r) => r), chords);
-        verify(() => repository.fetchCachedChordsPage()).called(1);
-        verifyNever(() => repository.fetchChordsPage());
+        final response = await service.fetchContent(id: 'chords');
+        expect(response.fold((l) => l, (r) => r), baseContent);
+        verify(() => repository.fetchCachedContent(id: 'chords')).called(1);
+        verifyNever(() => repository.fetchContent(id: 'chords'));
       },
     );
     test(
-      'FetchCachedChordsPage return null and FetchChordsPage return Failure',
+      'FetchCachedContent return null and FetchContent return Failure',
       () async {
-        when(() => repository.fetchCachedChordsPage()).thenAnswer(
+        when(() => repository.fetchCachedContent(id: 'chords')).thenAnswer(
           (_) => Future.value(null),
         );
-        when(() => repository.fetchChordsPage()).thenAnswer(
+        when(() => repository.fetchContent(id: 'chords')).thenAnswer(
           (_) => Future.value(Left(failure)),
         );
-        final response = await service.fetchChordsPage();
+        final response = await service.fetchContent(id: 'chords');
         expect(response.fold((l) => l, (r) => r), failure);
-        verify(() => repository.fetchCachedChordsPage()).called(1);
-        verify(() => repository.fetchChordsPage()).called(1);
+        verify(() => repository.fetchCachedContent(id: 'chords')).called(1);
+        verify(() => repository.fetchContent(id: 'chords')).called(1);
       },
     );
 
     test(
-      'FetchCachedChordsPage return null and FetchChordsPage return Success and call SaveAppData',
+      'FetchCachedContent return null and FetchContent return Success and call SaveAppData',
       () async {
-        when(() => repository.fetchCachedChordsPage()).thenAnswer(
+        when(() => repository.fetchCachedContent(id: 'chords')).thenAnswer(
           (_) => Future.value(null),
         );
-        when(() => repository.fetchChordsPage()).thenAnswer(
-          (_) => Future.value(Right(chords)),
+        when(() => repository.fetchContent(id: 'chords')).thenAnswer(
+          (_) => Future.value(Right(baseContent)),
         );
         when(() => repository.saveAppData(
               key: LocalStorageKeys.chordsPageData,
-              json: jsonChordsPage,
+              json: jsonBaseContent,
             )).thenAnswer((_) => Future.value(true));
-        final response = await service.fetchChordsPage();
-        expect(response.fold((l) => l, (r) => r), chords);
-        verify(() => repository.fetchCachedChordsPage()).called(1);
-        verify(() => repository.fetchChordsPage()).called(1);
+        final response = await service.fetchContent(id: 'chords');
+        expect(response.fold((l) => l, (r) => r), baseContent);
+        verify(() => repository.fetchCachedContent(id: 'chords')).called(1);
+        verify(() => repository.fetchContent(id: 'chords')).called(1);
         verify(() => repository.saveAppData(
-              json: jsonChordsPage,
+              json: jsonBaseContent,
               key: LocalStorageKeys.chordsPageData,
             )).called(1);
       },

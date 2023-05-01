@@ -25,15 +25,15 @@ class _ContentPageDetailsWidgetState extends State<ContentPageDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: bloc.selectedChordNotifier,
-      builder: (_, chord, __) => Padding(
+      valueListenable: bloc.selectedContentNotifier,
+      builder: (_, content, __) => Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Image.memory(base64Decode(chord.images.first)),
+            Image.memory(base64Decode(content.images.first)),
             SizedBox(height: 16.0),
             Text(
-              chord.description,
+              content.description,
               style: AppTextStyles.montserrat16w500,
             ),
           ],

@@ -5,21 +5,21 @@ import 'package:music_dictionary/domain/entities/home_page_content.dart';
 class HomePageContentModel extends HomePageContent {
   HomePageContentModel({
     required super.name,
-    required super.path,
+    required super.id,
   });
 
   @override
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
-      'path': path,
+      'id': id,
     };
   }
 
   factory HomePageContentModel.fromMap(Map<String, dynamic> map) {
     return HomePageContentModel(
       name: map['name'] as String,
-      path: map['path'] as String,
+      id: map['id'] as String,
     );
   }
 
@@ -34,6 +34,6 @@ class HomePageContentModel extends HomePageContent {
   factory HomePageContentModel.fromEntity(HomePageContent entity) =>
       HomePageContentModel(
         name: entity.name,
-        path: entity.path,
+        id: entity.id,
       );
 }

@@ -2,44 +2,28 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-class Chord {
+class BaseContent {
   final String name;
   final List<String> images;
   final String description;
 
-  Chord({
+  BaseContent({
     required this.name,
     required this.images,
     required this.description,
   });
 
-  Chord copyWith({
+  BaseContent copyWith({
     String? name,
     List<String>? images,
     String? description,
   }) {
-    return Chord(
+    return BaseContent(
       name: name ?? this.name,
       images: images ?? this.images,
       description: description ?? this.description,
     );
   }
-
-  @override
-  String toString() =>
-      'Chord(name: $name, images: $images, description: $description)';
-
-  @override
-  bool operator ==(covariant Chord other) {
-    if (identical(this, other)) return true;
-
-    return other.name == name &&
-        listEquals(other.images, images) &&
-        other.description == description;
-  }
-
-  @override
-  int get hashCode => name.hashCode ^ images.hashCode ^ description.hashCode;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -49,8 +33,8 @@ class Chord {
     };
   }
 
-  factory Chord.fromMap(Map<String, dynamic> map) {
-    return Chord(
+  factory BaseContent.fromMap(Map<String, dynamic> map) {
+    return BaseContent(
       name: map['name'] as String,
       images: List<String>.from((map['images'] as List<String>)),
       description: map['description'] as String,
@@ -59,6 +43,22 @@ class Chord {
 
   String toJson() => json.encode(toMap());
 
-  factory Chord.fromJson(String source) =>
-      Chord.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory BaseContent.fromJson(String source) =>
+      BaseContent.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() =>
+      'BaseContent(name: $name, images: $images, description: $description)';
+
+  @override
+  bool operator ==(covariant BaseContent other) {
+    if (identical(this, other)) return true;
+
+    return other.name == name &&
+        listEquals(other.images, images) &&
+        other.description == description;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ images.hashCode ^ description.hashCode;
 }

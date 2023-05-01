@@ -2,34 +2,34 @@ import 'dart:convert';
 
 class HomePageContent {
   final String name;
-  final String path;
+  final String id;
 
   HomePageContent({
     required this.name,
-    required this.path,
+    required this.id,
   });
 
   HomePageContent copyWith({
     String? name,
-    String? path,
+    String? id,
   }) {
     return HomePageContent(
       name: name ?? this.name,
-      path: path ?? this.path,
+      id: id ?? this.id,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'name': name,
-      'path': path,
+      'id': id,
     };
   }
 
   factory HomePageContent.fromMap(Map<String, dynamic> map) {
     return HomePageContent(
       name: map['name'] as String,
-      path: map['path'] as String,
+      id: map['id'] as String,
     );
   }
 
@@ -39,15 +39,15 @@ class HomePageContent {
       HomePageContent.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'HomePageContent(name: $name, path: $path)';
+  String toString() => 'HomePageContent(name: $name, id: $id)';
 
   @override
   bool operator ==(covariant HomePageContent other) {
     if (identical(this, other)) return true;
 
-    return other.name == name && other.path == path;
+    return other.name == name && other.id == id;
   }
 
   @override
-  int get hashCode => name.hashCode ^ path.hashCode;
+  int get hashCode => name.hashCode ^ id.hashCode;
 }

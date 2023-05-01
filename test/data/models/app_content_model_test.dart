@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_dictionary/data/models/app_content_model.dart';
+import 'package:music_dictionary/data/models/home_page_content_model.dart';
 import 'package:music_dictionary/domain/entities/home_page_content.dart';
 
 void main() {
   final map = {'name': 'Acordes', 'path': '/chords'};
-  final model = HomePageContentModel(name: 'Acordes', path: '/chords');
-  final entity = HomePageContent(name: 'Escalas', path: '/scales');
+  final model = HomePageContentModel(name: 'Acordes', id: '/chords');
+  final entity = HomePageContent(name: 'Escalas', id: '/scales');
 
   group('HomePageContentModel', () {
     test('fromMap', () {

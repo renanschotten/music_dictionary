@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_dictionary/data/models/app_content_model.dart';
+import 'package:music_dictionary/data/models/home_page_content_model.dart';
 import 'package:music_dictionary/data/persistence/music_dictionary_persistence.dart';
 import 'package:music_dictionary/domain/entities/home_page_content.dart';
 import 'package:music_dictionary/shared/constants/shared_preferences_keys.dart';
@@ -21,7 +21,7 @@ void main() {
     persistence = SharedPrefsMusicDictionaryPersistence(
       sharedPreferences: sharedPrefs,
     );
-    homePageData = [HomePageContent(name: 'Acordes', path: '/chords')];
+    homePageData = [HomePageContent(name: 'Acordes', id: '/chords')];
     json = jsonEncode(homePageData
         .map((e) => HomePageContentModel.fromEntity(e).toMap())
         .toList());
