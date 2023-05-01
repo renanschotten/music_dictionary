@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:music_dictionary/data/datasources/music_dictionary_datasource.dart';
 import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/domain/repositories/music_dictionary_repository.dart';
-import 'package:music_dictionary/domain/entities/app_content.dart';
+import 'package:music_dictionary/domain/entities/home_page_content.dart';
 import 'package:music_dictionary/data/persistence/music_dictionary_persistence.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
@@ -17,12 +17,12 @@ class MusicDictionaryRepositoryImpl implements MusicDictionaryRepository {
   final MusicDictionaryPersistence _persistence;
 
   @override
-  Future<Either<Failure, List<AppContent>>> fetchHomePage() async {
+  Future<Either<Failure, List<HomePageContent>>> fetchHomePage() async {
     return await _datasource.fetchHomePage();
   }
 
   @override
-  Future<List<AppContent>?> fetchCachedHomePage() async {
+  Future<List<HomePageContent>?> fetchCachedHomePage() async {
     return await _persistence.fetchHomePage();
   }
 

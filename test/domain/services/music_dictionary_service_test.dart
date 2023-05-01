@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_dictionary/domain/entities/app_content.dart';
+import 'package:music_dictionary/domain/entities/home_page_content.dart';
 import 'package:music_dictionary/domain/entities/chord.dart';
 import 'package:music_dictionary/domain/repositories/music_dictionary_repository.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
@@ -17,7 +17,7 @@ void main() {
   late MusicDictionaryRepository repository;
   late MusicDictionaryService service;
   late Failure failure;
-  late List<AppContent> homePageData;
+  late List<HomePageContent> homePageData;
   late List<Chord> chords;
   late String key;
   late String jsonHomePage;
@@ -27,11 +27,11 @@ void main() {
     repository = MockMusicDictionaryRepository();
     service = MusicDictionaryService(repository: repository);
     failure = Failure();
-    homePageData = [AppContent(name: 'Acordes', path: '/chords')];
+    homePageData = [HomePageContent(name: 'Acordes', path: '/chords')];
     chords = [Chord(name: 'name', images: [], description: 'description')];
     key = LocalStorageKeys.homePageData;
     jsonHomePage =
-        jsonEncode([AppContent(name: 'Acordes', path: '/chords').toMap()]);
+        jsonEncode([HomePageContent(name: 'Acordes', path: '/chords').toMap()]);
     jsonChordsPage = jsonEncode(
         [Chord(name: 'name', images: [], description: 'description').toMap()]);
   });

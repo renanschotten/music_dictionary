@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:music_dictionary/domain/entities/app_content.dart';
+import 'package:music_dictionary/domain/entities/home_page_content.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
 import 'package:music_dictionary/presentation/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
@@ -14,8 +14,8 @@ void main() {
   late MusicDictionaryService service;
   late HomePageBloc bloc;
   final Failure failure = GenericFailure(message: 'message');
-  final List<AppContent> homePageData = [
-    AppContent(name: 'name', path: 'path')
+  final List<HomePageContent> homePageData = [
+    HomePageContent(name: 'name', path: 'path')
   ];
 
   setUp(() {

@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class MusicDictionaryPersistence {
   Future<bool> saveAppData({required String key, required String json});
-  Future<List<AppContentModel>?> fetchHomePage();
+  Future<List<HomePageContentModel>?> fetchHomePage();
   Future<List<ChordModel>?> fetchChordsPage();
 }
 
@@ -30,13 +30,13 @@ class SharedPrefsMusicDictionaryPersistence
   }
 
   @override
-  Future<List<AppContentModel>?> fetchHomePage() async {
+  Future<List<HomePageContentModel>?> fetchHomePage() async {
     try {
       final json = sharedPreferences.getString(LocalStorageKeys.homePageData);
       if (json == null || json.isEmpty) return null;
       final List response = jsonDecode(json);
-      final List<AppContentModel> homePageData =
-          response.map((e) => AppContentModel.fromMap(e)).toList();
+      final List<HomePageContentModel> homePageData =
+          response.map((e) => HomePageContentModel.fromMap(e)).toList();
       return homePageData;
     } catch (e) {
       return null;

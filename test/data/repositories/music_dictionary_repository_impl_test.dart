@@ -6,7 +6,6 @@ import 'package:music_dictionary/data/models/app_content_model.dart';
 import 'package:music_dictionary/data/models/chord_model.dart';
 import 'package:music_dictionary/data/persistence/music_dictionary_persistence.dart';
 import 'package:music_dictionary/data/repositories/music_dictionary_repository_impl.dart';
-import 'package:music_dictionary/domain/entities/app_content.dart';
 import 'package:music_dictionary/shared/constants/shared_preferences_keys.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
@@ -23,13 +22,14 @@ void main() {
     datasource: datasource,
     persistence: persistence,
   );
-  final appContentModel = [AppContentModel(name: 'Acordes', path: '/chords')];
-  final appContentEntity = [AppContent(name: 'Acordes', path: '/chords')];
+  final appContentModel = [
+    HomePageContentModel(name: 'Acordes', path: '/chords')
+  ];
   final failure = Failure();
   final chords = [
     ChordModel(name: 'A', images: ['images'], description: 'description')
   ];
-  final json = AppContentModel(name: 'Acordes', path: '/chords').toJson();
+  final json = HomePageContentModel(name: 'Acordes', path: '/chords').toJson();
   const key = LocalStorageKeys.homePageData;
 
   group('MusicDictionaryRepositoryImpl', () {
