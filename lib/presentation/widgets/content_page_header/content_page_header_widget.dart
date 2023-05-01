@@ -12,7 +12,11 @@ class ContentPageHeaderWidget extends StatefulWidget {
 }
 
 class _ContentPageHeaderWidgetState extends State<ContentPageHeaderWidget> {
+  final ScrollController scrollController = ScrollController();
   late final ContentPageBloc bloc;
+  int previousIndex = 0;
+  double currentPosition = 0;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -24,12 +28,15 @@ class _ContentPageHeaderWidgetState extends State<ContentPageHeaderWidget> {
     return SizedBox(
       height: 48,
       child: ListView.separated(
+        controller: scrollController,
         separatorBuilder: (_, __) => SizedBox(width: 8),
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: bloc.chords.length,
         itemBuilder: (context, index) => InkWell(
           onTap: () {
+            previousIndex = bloc.selectedChordIndex.value;
+            updateScrollPosition(index);
             bloc.updateSelectedChord(index);
           },
           child: SizedBox(
@@ -51,5 +58,16 @@ class _ContentPageHeaderWidgetState extends State<ContentPageHeaderWidget> {
         ),
       ),
     );
+  }
+
+  void updateScrollPosition(int index) {
+    if (index > previousIndex &&
+        (currentPosition + 20) < scrollController.position.maxScrollExtent) {
+      scrollController
+          .jumpTo(currentPosition += (20 * (index - previousIndex)));
+    } else if (index < previousIndex &&
+        currentPosition > scrollController.position.minScrollExtent) {
+      scrollController.jumpTo(currentPosition -= 20 * (previousIndex - index));
+    }
   }
 }
