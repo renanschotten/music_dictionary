@@ -42,12 +42,14 @@ class _ContentPageState extends State<ContentPage> {
                 ),
               );
             } else if (state is ContentPageSuccess) {
-              return Column(
-                children: const [
-                  ContentPageHeaderWidget(),
-                  SizedBox(height: 24),
-                  ContentPageDetailsWidget()
-                ],
+              return SingleChildScrollView(
+                child: Column(
+                  children: const [
+                    ContentPageHeaderWidget(),
+                    SizedBox(height: 24),
+                    ContentPageDetailsWidget()
+                  ],
+                ),
               );
             } else {
               return SizedBox();
