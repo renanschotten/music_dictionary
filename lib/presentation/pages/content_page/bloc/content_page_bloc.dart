@@ -8,7 +8,7 @@ part 'content_page_state.dart';
 
 class ContentPageBloc extends Bloc<ContentPageEvent, ContentPageState> {
   final MusicDictionaryService service;
-  late final List<Chord> chords;
+  late List<Chord> chords;
 
   late final ValueNotifier<Chord> selectedChordNotifier;
 
