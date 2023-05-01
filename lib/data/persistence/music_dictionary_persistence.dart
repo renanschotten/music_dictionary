@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:music_dictionary/data/models/app_content_model.dart';
-import 'package:music_dictionary/data/models/chord_model.dart';
+import 'package:music_dictionary/data/models/home_page_content_model.dart';
+import 'package:music_dictionary/data/models/base_content_model.dart';
 import 'package:music_dictionary/shared/constants/shared_preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class MusicDictionaryPersistence {
   Future<bool> saveAppData({required String key, required String json});
-  Future<List<AppContentModel>?> fetchHomePage();
-  Future<List<ChordModel>?> fetchChordsPage();
+  Future<List<HomePageContentModel>?> fetchHomePage();
+  Future<List<BaseContentModel>?> fetchContent({required String id});
 }
 
 class SharedPrefsMusicDictionaryPersistence
@@ -30,13 +30,13 @@ class SharedPrefsMusicDictionaryPersistence
   }
 
   @override
-  Future<List<AppContentModel>?> fetchHomePage() async {
+  Future<List<HomePageContentModel>?> fetchHomePage() async {
     try {
       final json = sharedPreferences.getString(LocalStorageKeys.homePageData);
       if (json == null || json.isEmpty) return null;
       final List response = jsonDecode(json);
-      final List<AppContentModel> homePageData =
-          response.map((e) => AppContentModel.fromMap(e)).toList();
+      final List<HomePageContentModel> homePageData =
+          response.map((e) => HomePageContentModel.fromMap(e)).toList();
       return homePageData;
     } catch (e) {
       return null;
@@ -44,14 +44,14 @@ class SharedPrefsMusicDictionaryPersistence
   }
 
   @override
-  Future<List<ChordModel>?> fetchChordsPage() async {
+  Future<List<BaseContentModel>?> fetchContent({required String id}) async {
     try {
-      final json = sharedPreferences.getString(LocalStorageKeys.chordsPageData);
+      final json = sharedPreferences.getString(id);
       if (json == null || json.isEmpty) return null;
       final List response = jsonDecode(json);
-      final List<ChordModel> chordsPageData =
-          response.map((e) => ChordModel.fromMap(e)).toList();
-      return chordsPageData;
+      final List<BaseContentModel> content =
+          response.map((e) => BaseContentModel.fromMap(e)).toList();
+      return content;
     } catch (e) {
       return null;
     }

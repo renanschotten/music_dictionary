@@ -10,7 +10,7 @@ class ContentPageLoading extends ContentPageState {}
 class ContentPageFailure extends ContentPageState {}
 
 class ContentPageSuccess extends ContentPageState {
-  final List<Chord> response;
+  final List<BaseContent> response;
 
   ContentPageSuccess({required this.response});
 }

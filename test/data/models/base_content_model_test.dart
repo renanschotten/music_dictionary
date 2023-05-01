@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:music_dictionary/data/models/chord_model.dart';
-import 'package:music_dictionary/domain/entities/chord.dart';
+import 'package:music_dictionary/data/models/base_content_model.dart';
+import 'package:music_dictionary/domain/entities/base_content.dart';
 
 void main() {
   final map = {
@@ -10,21 +10,21 @@ void main() {
     'images': ['img1'],
     'description': 'description'
   };
-  final model = ChordModel(
+  final model = BaseContentModel(
     name: 'A',
     images: ['img1'],
     description: 'description',
   );
 
-  final entity = Chord(
+  final entity = BaseContent(
     name: 'A',
     images: ['img1'],
     description: 'description',
   );
 
-  group('ChordModel', () {
+  group('BaseContentModel', () {
     test('fromMap', () {
-      final fromMap = ChordModel.fromMap(map);
+      final fromMap = BaseContentModel.fromMap(map);
       expect(fromMap, model);
     });
 
@@ -34,7 +34,7 @@ void main() {
     });
 
     test('fromEntity', () {
-      final fromEntity = ChordModel.fromEntity(entity);
+      final fromEntity = BaseContentModel.fromEntity(entity);
       expect(fromEntity, model);
     });
 
@@ -45,7 +45,7 @@ void main() {
 
     test('fromJson', () {
       final json = jsonEncode(map);
-      final fromJson = ChordModel.fromJson(json);
+      final fromJson = BaseContentModel.fromJson(json);
       expect(fromJson, model);
     });
   });

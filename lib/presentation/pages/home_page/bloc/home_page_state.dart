@@ -14,7 +14,7 @@ class HomePageFailure extends HomePageState {
 }
 
 class HomePageSuccess extends HomePageState {
-  final List<AppContent> response;
+  final List<HomePageContent> response;
   HomePageSuccess({
     required this.response,
   });

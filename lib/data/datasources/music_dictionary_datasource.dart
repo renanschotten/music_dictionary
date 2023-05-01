@@ -1,32 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 
-import 'package:music_dictionary/data/models/app_content_model.dart';
-import 'package:music_dictionary/data/models/chord_model.dart';
+import 'package:music_dictionary/data/models/home_page_content_model.dart';
+import 'package:music_dictionary/data/models/base_content_model.dart';
 import 'package:music_dictionary/shared/constants/firebase_keys.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
 abstract class MusicDictionaryDatasource {
-  Future<Either<Failure, List<AppContentModel>>> fetchHomePage();
-  Future<Either<Failure, List<ChordModel>>> fetchChordsPage();
+  Future<Either<Failure, List<HomePageContentModel>>> fetchHomePage();
+  Future<Either<Failure, List<BaseContentModel>>> fetchContent({
+    required String id,
+  });
 }
 
 class MockMusicDictionaryDatasource implements MusicDictionaryDatasource {
   @override
-  Future<Either<Failure, List<AppContentModel>>> fetchHomePage() async {
+  Future<Either<Failure, List<HomePageContentModel>>> fetchHomePage() async {
     await Future.delayed(Duration(seconds: 2));
     return Right([
-      AppContentModel(name: 'Acordes', path: '/chords'),
-      AppContentModel(name: 'Escalas', path: '/scales')
+      HomePageContentModel(name: 'Acordes', id: 'chords'),
+      HomePageContentModel(name: 'Escalas', id: 'scales')
     ]);
   }
 
   @override
-  Future<Either<Failure, List<ChordModel>>> fetchChordsPage() async {
+  Future<Either<Failure, List<BaseContentModel>>> fetchContent({
+    required String id,
+  }) async {
     await Future.delayed(Duration(seconds: 2));
     return Right([
-      ChordModel(name: 'A', images: ['img1'], description: 'description'),
-      ChordModel(name: 'B', images: ['img1'], description: 'description'),
+      BaseContentModel(name: 'A', images: ['img1'], description: 'description'),
+      BaseContentModel(name: 'B', images: ['img1'], description: 'description'),
     ]);
   }
 }
@@ -37,15 +41,15 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
   final FirebaseFirestore firestore;
 
   @override
-  Future<Either<Failure, List<AppContentModel>>> fetchHomePage() async {
+  Future<Either<Failure, List<HomePageContentModel>>> fetchHomePage() async {
     try {
-      List<AppContentModel> homePageData = [];
+      List<HomePageContentModel> homePageData = [];
       final response = await firestore
           .collection(FirebaseKeys.homePageCollection)
           .doc(FirebaseKeys.homePageContents)
           .get();
       final List array = response.data()?[FirebaseKeys.contents];
-      array.forEach((e) => homePageData.add(AppContentModel.fromMap(e)));
+      array.forEach((e) => homePageData.add(HomePageContentModel.fromMap(e)));
       return Right(homePageData);
     } on FirebaseException catch (e) {
       return Left(
@@ -64,16 +68,16 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
   }
 
   @override
-  Future<Either<Failure, List<ChordModel>>> fetchChordsPage() async {
+  Future<Either<Failure, List<BaseContentModel>>> fetchContent({
+    required String id,
+  }) async {
     try {
-      List<ChordModel> chordsPageData = [];
-      final response = await firestore
-          .collection(FirebaseKeys.chordsPageCollection)
-          .doc(FirebaseKeys.chordsPageContents)
-          .get();
+      List<BaseContentModel> baseContent = [];
+      final response =
+          await firestore.collection(FirebaseKeys.contents).doc(id).get();
       final List array = response.data()?[FirebaseKeys.contents];
-      array.forEach((e) => chordsPageData.add(ChordModel.fromMap(e)));
-      return Right(chordsPageData);
+      array.forEach((e) => baseContent.add(BaseContentModel.fromMap(e)));
+      return Right(baseContent);
     } on FirebaseException catch (e) {
       return Left(
         NetworkFailure(

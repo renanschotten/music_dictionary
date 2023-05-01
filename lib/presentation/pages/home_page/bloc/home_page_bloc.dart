@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:music_dictionary/domain/entities/app_content.dart';
+import 'package:music_dictionary/domain/entities/home_page_content.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
 
 part 'home_page_event.dart';

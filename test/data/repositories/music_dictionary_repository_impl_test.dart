@@ -2,11 +2,10 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:music_dictionary/data/datasources/music_dictionary_datasource.dart';
-import 'package:music_dictionary/data/models/app_content_model.dart';
-import 'package:music_dictionary/data/models/chord_model.dart';
+import 'package:music_dictionary/data/models/home_page_content_model.dart';
+import 'package:music_dictionary/data/models/base_content_model.dart';
 import 'package:music_dictionary/data/persistence/music_dictionary_persistence.dart';
 import 'package:music_dictionary/data/repositories/music_dictionary_repository_impl.dart';
-import 'package:music_dictionary/domain/entities/app_content.dart';
 import 'package:music_dictionary/shared/constants/shared_preferences_keys.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
@@ -23,13 +22,14 @@ void main() {
     datasource: datasource,
     persistence: persistence,
   );
-  final appContentModel = [AppContentModel(name: 'Acordes', path: '/chords')];
-  final appContentEntity = [AppContent(name: 'Acordes', path: '/chords')];
-  final failure = Failure();
-  final chords = [
-    ChordModel(name: 'A', images: ['images'], description: 'description')
+  final appContentModel = [
+    HomePageContentModel(name: 'Acordes', id: '/chords')
   ];
-  final json = AppContentModel(name: 'Acordes', path: '/chords').toJson();
+  final failure = Failure();
+  final baseContentModel = [
+    BaseContentModel(name: 'A', images: ['images'], description: 'description')
+  ];
+  final json = HomePageContentModel(name: 'Acordes', id: '/chords').toJson();
   const key = LocalStorageKeys.homePageData;
 
   group('MusicDictionaryRepositoryImpl', () {
@@ -81,36 +81,36 @@ void main() {
       expect(response, true);
     });
 
-    test('FetchChordsPage Failure', () async {
-      when(() => datasource.fetchChordsPage()).thenAnswer(
+    test('FetchContent Failure', () async {
+      when(() => datasource.fetchContent(id: 'chords')).thenAnswer(
         (_) => Future.value(Left(failure)),
       );
-      final response = await repository.fetchChordsPage();
+      final response = await repository.fetchContent(id: 'chords');
       expect(response.fold((l) => l, (r) => r), failure);
     });
 
-    test('FetchChordsPage Success', () async {
-      when(() => datasource.fetchChordsPage()).thenAnswer(
-        (_) => Future.value(Right(chords)),
+    test('FetchContent Success', () async {
+      when(() => datasource.fetchContent(id: 'chords')).thenAnswer(
+        (_) => Future.value(Right(baseContentModel)),
       );
-      final response = await repository.fetchChordsPage();
-      expect(response.fold((l) => l, (r) => r), chords);
+      final response = await repository.fetchContent(id: 'chords');
+      expect(response.fold((l) => l, (r) => r), baseContentModel);
     });
 
-    test('FetchCachedChordsPage Failure', () async {
-      when(() => persistence.fetchChordsPage()).thenAnswer(
+    test('FetchCachedContent Failure', () async {
+      when(() => persistence.fetchContent(id: 'chords')).thenAnswer(
         (_) => Future.value(null),
       );
-      final response = await repository.fetchCachedChordsPage();
+      final response = await repository.fetchCachedContent(id: 'chords');
       expect(response, null);
     });
 
-    test('FetchCachedChordsPage Success', () async {
-      when(() => persistence.fetchChordsPage()).thenAnswer(
-        (_) => Future.value(chords),
+    test('FetchCachedContent Success', () async {
+      when(() => persistence.fetchContent(id: 'chords')).thenAnswer(
+        (_) => Future.value(baseContentModel),
       );
-      final response = await repository.fetchCachedChordsPage();
-      expect(response, chords);
+      final response = await repository.fetchCachedContent(id: 'chords');
+      expect(response, baseContentModel);
     });
   });
 }
