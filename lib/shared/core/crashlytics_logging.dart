@@ -6,8 +6,8 @@ class CrashlyticsLogging {
 
   static CrashlyticsLogging get instance => CrashlyticsLogging._();
 
-  void recordError({String? message, StackTrace? stackTrace}) {
-    FirebaseCrashlytics.instance.recordFlutterFatalError(
+  Future<void> recordError({String? message, StackTrace? stackTrace}) async {
+    await FirebaseCrashlytics.instance.recordFlutterFatalError(
       FlutterErrorDetails(
         exception: message ?? 'Error',
         stack: stackTrace,

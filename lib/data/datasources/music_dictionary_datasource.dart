@@ -4,6 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:music_dictionary/data/models/home_page_content_model.dart';
 import 'package:music_dictionary/data/models/base_content_model.dart';
 import 'package:music_dictionary/shared/constants/firebase_keys.dart';
+import 'package:music_dictionary/shared/core/crashlytics_logging.dart';
 import 'package:music_dictionary/shared/core/failure.dart';
 
 abstract class MusicDictionaryDatasource {
@@ -52,6 +53,10 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
       array.forEach((e) => homePageData.add(HomePageContentModel.fromMap(e)));
       return Right(homePageData);
     } on FirebaseException catch (e, stackTrace) {
+      CrashlyticsLogging.instance.recordError(
+        message: e.message,
+        stackTrace: stackTrace,
+      );
       return Left(
         NetworkFailure(
           message: e.message ?? 'Erro de Conexao',
@@ -60,6 +65,10 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
         ),
       );
     } catch (e, stackTrace) {
+      CrashlyticsLogging.instance.recordError(
+        message: e.toString(),
+        stackTrace: stackTrace,
+      );
       return Left(
         GenericFailure(
           message: e.toString(),
@@ -81,6 +90,10 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
       array.forEach((e) => baseContent.add(BaseContentModel.fromMap(e)));
       return Right(baseContent);
     } on FirebaseException catch (e, stackTrace) {
+      CrashlyticsLogging.instance.recordError(
+        message: e.message,
+        stackTrace: stackTrace,
+      );
       return Left(
         NetworkFailure(
           message: e.message ?? 'Erro de Conexao',
@@ -89,6 +102,10 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
         ),
       );
     } catch (e, stackTrace) {
+      CrashlyticsLogging.instance.recordError(
+        message: e.toString(),
+        stackTrace: stackTrace,
+      );
       return Left(
         GenericFailure(
           message: e.toString(),
