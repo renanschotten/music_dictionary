@@ -12,4 +12,10 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     fontSize: 16,
   );
+
+  static const TextStyle montserrat32w900 = TextStyle(
+    fontFamily: 'Montserrat',
+    fontWeight: FontWeight.w900,
+    fontSize: 32,
+  );
 }

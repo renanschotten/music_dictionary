@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:music_dictionary/domain/entities/base_content.dart';
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
+import 'package:music_dictionary/shared/core/crashlytics_logging.dart';
 
 part 'content_page_event.dart';
 part 'content_page_state.dart';
@@ -26,7 +27,13 @@ class ContentPageBloc extends Bloc<ContentPageEvent, ContentPageState> {
       emit(ContentPageLoading());
       final response = await service.fetchContent(id: event.id);
       emit(response.fold(
-        (l) => ContentPageFailure(),
+        (l) {
+          CrashlyticsLogging.instance.recordError(
+            message: l.message,
+            stackTrace: l.stackTrace,
+          );
+          return ContentPageFailure();
+        },
         (r) {
           content = r;
           selectedContentNotifier = ValueNotifier<BaseContent>(r.first);

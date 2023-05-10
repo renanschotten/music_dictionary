@@ -6,6 +6,7 @@ import 'package:music_dictionary/presentation/pages/content_page/bloc/content_pa
 import 'package:music_dictionary/presentation/pages/content_page/content_page.dart';
 import 'package:music_dictionary/presentation/pages/home_page/bloc/home_page_bloc.dart';
 import 'package:music_dictionary/presentation/pages/home_page/home_page.dart';
+import 'package:music_dictionary/presentation/pages/splash/splash_screen.dart';
 import 'package:music_dictionary/shared/config/routes.dart';
 
 class MusicDictionaryApp extends StatelessWidget {
@@ -21,9 +22,11 @@ class MusicDictionaryApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          useMaterial3: true,
         ),
-        initialRoute: Routes.home,
+        initialRoute: Routes.splash,
         routes: {
+          Routes.splash: (_) => SplashScreen(),
           Routes.home: (_) => HomePage(),
           Routes.contentDetails: (context) => ContentPage(
                 homePageContent: ModalRoute.of(context)?.settings.arguments

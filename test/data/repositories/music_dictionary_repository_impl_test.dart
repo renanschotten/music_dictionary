@@ -25,7 +25,7 @@ void main() {
   final appContentModel = [
     HomePageContentModel(name: 'Acordes', id: '/chords')
   ];
-  final failure = Failure();
+  final failure = GenericFailure(message: '');
   final baseContentModel = [
     BaseContentModel(name: 'A', images: ['images'], description: 'description')
   ];

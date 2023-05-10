@@ -18,8 +18,8 @@ class HomePageContentModel extends HomePageContent {
 
   factory HomePageContentModel.fromMap(Map<String, dynamic> map) {
     return HomePageContentModel(
-      name: map['name'] as String,
-      id: map['id'] as String,
+      name: map['name'] ?? '',
+      id: map['id'] ?? '',
     );
   }
 
