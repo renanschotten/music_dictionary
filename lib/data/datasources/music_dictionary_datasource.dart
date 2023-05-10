@@ -51,17 +51,19 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
       final List array = response.data()?[FirebaseKeys.contents];
       array.forEach((e) => homePageData.add(HomePageContentModel.fromMap(e)));
       return Right(homePageData);
-    } on FirebaseException catch (e) {
+    } on FirebaseException catch (e, stackTrace) {
       return Left(
         NetworkFailure(
           message: e.message ?? 'Erro de Conexao',
           code: e.code,
+          stackTrace: stackTrace,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       return Left(
         GenericFailure(
           message: e.toString(),
+          stackTrace: stackTrace,
         ),
       );
     }
@@ -78,17 +80,19 @@ class FirestoreMusicDictionaryDatasource implements MusicDictionaryDatasource {
       final List array = response.data()?[FirebaseKeys.contents];
       array.forEach((e) => baseContent.add(BaseContentModel.fromMap(e)));
       return Right(baseContent);
-    } on FirebaseException catch (e) {
+    } on FirebaseException catch (e, stackTrace) {
       return Left(
         NetworkFailure(
           message: e.message ?? 'Erro de Conexao',
           code: e.code,
+          stackTrace: stackTrace,
         ),
       );
-    } catch (e) {
+    } catch (e, stackTrace) {
       return Left(
         GenericFailure(
           message: e.toString(),
+          stackTrace: stackTrace,
         ),
       );
     }

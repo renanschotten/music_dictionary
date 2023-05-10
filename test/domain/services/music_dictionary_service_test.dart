@@ -26,7 +26,7 @@ void main() {
   setUp(() {
     repository = MockMusicDictionaryRepository();
     service = MusicDictionaryService(repository: repository);
-    failure = Failure();
+    failure = GenericFailure(message: '');
     homePageData = [HomePageContent(name: 'Acordes', id: '/chords')];
     baseContent = [
       BaseContent(name: 'name', images: [], description: 'description')
