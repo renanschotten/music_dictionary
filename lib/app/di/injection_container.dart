@@ -7,6 +7,7 @@ import 'package:music_dictionary/domain/repositories/music_dictionary_repository
 import 'package:music_dictionary/domain/services/music_dictionary_service.dart';
 import 'package:music_dictionary/presentation/pages/content_page/bloc/content_page_bloc.dart';
 import 'package:music_dictionary/presentation/pages/home_page/bloc/home_page_bloc.dart';
+import 'package:music_dictionary/shared/core/ads/ad_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 GetIt getIt = GetIt.instance;
@@ -64,6 +65,8 @@ Future<void> init() async {
       service: getIt<MusicDictionaryService>(),
     ),
   );
+
+  getIt.registerFactory<AdController>(() => AdController());
 }
 
 Future<void> _initSharedPref() async {
