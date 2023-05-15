@@ -3,6 +3,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:music_dictionary/app/di/injection_container.dart';
 import 'package:music_dictionary/app/music_dictionary_app.dart';
@@ -27,6 +28,7 @@ Future<void> main() async {
         .recordError(exception, stackTrace, fatal: true);
     return true;
   };
+  MobileAds.instance.initialize();
   runApp(const MusicDictionaryApp());
 }
 
