@@ -24,6 +24,7 @@ class MusicDictionaryApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           useMaterial3: true,
         ),
+        debugShowCheckedModeBanner: false,
         initialRoute: Routes.splash,
         routes: {
           Routes.splash: (_) => SplashScreen(),
