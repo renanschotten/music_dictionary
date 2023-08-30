@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -44,22 +45,23 @@ class _HomePageState extends State<HomePage> {
         appBar: CustomAppBar(title: 'Dicionário Musical'),
         body: Column(
           children: [
-            ValueListenableBuilder<BannerAd?>(
-              valueListenable: adController.banner,
-              builder: (context, banner, child) {
-                if (banner != null) {
-                  return Align(
-                    alignment: Alignment.topCenter,
-                    child: SizedBox(
-                      width: banner.size.width.toDouble(),
-                      height: banner.size.height.toDouble(),
-                      child: AdWidget(ad: banner),
-                    ),
-                  );
-                }
-                return SizedBox();
-              },
-            ),
+            if (FirebaseRemoteConfig.instance.getBool('ft_ads'))
+              ValueListenableBuilder<BannerAd?>(
+                valueListenable: adController.banner,
+                builder: (context, banner, child) {
+                  if (banner != null) {
+                    return Align(
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(
+                        width: banner.size.width.toDouble(),
+                        height: banner.size.height.toDouble(),
+                        child: AdWidget(ad: banner),
+                      ),
+                    );
+                  }
+                  return SizedBox();
+                },
+              ),
             BlocBuilder<HomePageBloc, HomePageState>(
               bloc: getIt<HomePageBloc>(),
               builder: (context, state) {
