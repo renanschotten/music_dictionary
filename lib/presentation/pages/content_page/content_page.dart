@@ -1,3 +1,4 @@
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -43,51 +44,52 @@ class _ContentPageState extends State<ContentPage> {
     return SafeArea(
       child: Scaffold(
         appBar: CustomAppBar(title: widget.homePageContent.name),
-        body: Column(
-          children: [
-            ValueListenableBuilder<BannerAd?>(
-              valueListenable: adController.banner,
-              builder: (context, banner, child) {
-                if (banner != null) {
-                  return Align(
-                    alignment: Alignment.topCenter,
-                    child: SizedBox(
-                      width: banner.size.width.toDouble(),
-                      height: banner.size.height.toDouble(),
-                      child: AdWidget(ad: banner),
-                    ),
-                  );
-                }
-                return SizedBox();
-              },
-            ),
-            BlocBuilder<ContentPageBloc, ContentPageState>(
-              bloc: bloc,
-              builder: (context, state) {
-                if (state is ContentPageLoading) {
-                  return Expanded(child: LoadingWidget());
-                } else if (state is ContentPageFailure) {
-                  return ErrorPageWidget(
-                    onTapButton: () => bloc.add(
-                      FetchContentPageEvent(id: widget.homePageContent.id),
-                    ),
-                  );
-                } else if (state is ContentPageSuccess) {
-                  return SingleChildScrollView(
-                    child: Column(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (FirebaseRemoteConfig.instance.getBool('ft_ads'))
+                ValueListenableBuilder<BannerAd?>(
+                  valueListenable: adController.banner,
+                  builder: (context, banner, child) {
+                    if (banner != null) {
+                      return Align(
+                        alignment: Alignment.topCenter,
+                        child: SizedBox(
+                          width: banner.size.width.toDouble(),
+                          height: banner.size.height.toDouble(),
+                          child: AdWidget(ad: banner),
+                        ),
+                      );
+                    }
+                    return SizedBox();
+                  },
+                ),
+              BlocBuilder<ContentPageBloc, ContentPageState>(
+                bloc: bloc,
+                builder: (context, state) {
+                  if (state is ContentPageLoading) {
+                    return Expanded(child: LoadingWidget());
+                  } else if (state is ContentPageFailure) {
+                    return ErrorPageWidget(
+                      onTapButton: () => bloc.add(
+                        FetchContentPageEvent(id: widget.homePageContent.id),
+                      ),
+                    );
+                  } else if (state is ContentPageSuccess) {
+                    return Column(
                       children: const [
                         ContentPageHeaderWidget(),
                         SizedBox(height: 24),
                         ContentPageDetailsWidget()
                       ],
-                    ),
-                  );
-                } else {
-                  return SizedBox();
-                }
-              },
-            ),
-          ],
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

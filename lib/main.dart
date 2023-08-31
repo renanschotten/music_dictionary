@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +16,7 @@ import 'package:music_dictionary/app/di/injection_container.dart' as ic;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await initializeFirebaseRemoteConfig();
   await ic.init();
   await shouldClearLocalStorage();
   SystemChrome.setPreferredOrientations([
@@ -30,6 +32,18 @@ Future<void> main() async {
   };
   MobileAds.instance.initialize();
   runApp(const MusicDictionaryApp());
+}
+
+Future<void> initializeFirebaseRemoteConfig() async {
+  final remoteConfig = FirebaseRemoteConfig.instance;
+  await remoteConfig.setConfigSettings(RemoteConfigSettings(
+    fetchTimeout: const Duration(seconds: 1),
+    minimumFetchInterval: const Duration(seconds: 1),
+  ));
+  await remoteConfig.setDefaults({
+    'ft_ads': true,
+  });
+  await remoteConfig.fetchAndActivate();
 }
 
 Future<void> shouldClearLocalStorage() async {
