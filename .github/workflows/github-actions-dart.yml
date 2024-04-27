@@ -9,12 +9,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
+      - name: Clone repository
+        uses: actions/checkout@v4
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.19.6
-          channel: "stable"
-          cache: true
+          channel: stable
+          flutter-version-file: pubspec.yaml # path to pubspec.yaml
+      - run: flutter --version
 
       - name: Install dependencies
         run: flutter pub get
@@ -31,4 +33,4 @@ jobs:
         run: flutter test
 
       - name: Flutter Build
-        run: flutter build -v
+        run: flutter build apk -v
