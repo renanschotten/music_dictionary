@@ -68,5 +68,5 @@ Future<void> clearSharedPrefs() async {
 }
 
 Future<bool> checkInternetConnection() async {
-  return await InternetConnectionChecker().hasConnection;
+  return await InternetConnectionChecker.createInstance().hasConnection;
 }

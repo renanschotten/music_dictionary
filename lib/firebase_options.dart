@@ -55,7 +55,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '205061030092',
     projectId: 'musicdictionary-34dd2',
     databaseURL: 'https://musicdictionary-34dd2-default-rtdb.firebaseio.com',
-    storageBucket: 'musicdictionary-34dd2.appspot.com',
+    storageBucket: 'musicdictionary-34dd2.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -64,8 +64,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '205061030092',
     projectId: 'musicdictionary-34dd2',
     databaseURL: 'https://musicdictionary-34dd2-default-rtdb.firebaseio.com',
-    storageBucket: 'musicdictionary-34dd2.appspot.com',
-    iosClientId: '205061030092-93ljrlt1cut9pc5otqnoc731qjncaa6t.apps.googleusercontent.com',
+    storageBucket: 'musicdictionary-34dd2.firebasestorage.app',
     iosBundleId: 'com.renanschotten.musicDictionary',
   );
+
 }
